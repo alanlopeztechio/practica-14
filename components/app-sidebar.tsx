@@ -25,17 +25,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useUser } from "@clerk/nextjs";
-import { useState } from "react";
 
 const data = {
-  user: () => {
-    const { user } = useUser();
-
-    return {
-      name: user?.fullName || "Nombre no definido",
-      email: user?.emailAddresses[0].toString() || "",
-      avatar: user?.imageUrl || "",
-    };
+  user: {
+    name: "",
+    email: "",
+    avatar: "",
   },
   navMain: [
     {
@@ -147,6 +142,16 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useUser();
+
+  const userData = {
+    name: user?.fullName || "Nombre no definido",
+    email: user?.emailAddresses[0]?.toString() || "",
+    avatar: user?.imageUrl || "",
+  };
+
+  data.user = userData;
+
   return (
     <Sidebar
       className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
@@ -174,7 +179,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user()} />
+        <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
   );
