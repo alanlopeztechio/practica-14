@@ -5,20 +5,14 @@ import {
   BookOpen,
   Bot,
   Command,
-  Frame,
   LifeBuoy,
-  Map,
-  PieChart,
   School,
   Send,
-  Settings2,
-  SquareTerminal,
   Timer,
   User,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -30,12 +24,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+  user: () => {
+    const { user } = useUser();
+
+    return {
+      name: user?.fullName || "Nombre no definido",
+      email: user?.emailAddresses[0].toString() || "",
+      avatar: user?.imageUrl || "",
+    };
   },
   navMain: [
     {
@@ -174,7 +174,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={data.user()} />
       </SidebarFooter>
     </Sidebar>
   );
