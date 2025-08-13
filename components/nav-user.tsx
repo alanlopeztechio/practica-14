@@ -95,7 +95,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onSelect={() => {
-                signOut({ redirectUrl: "/inicio" });
+                signOut({ redirectUrl: "/" });
               }}
             >
               <LogOut />
